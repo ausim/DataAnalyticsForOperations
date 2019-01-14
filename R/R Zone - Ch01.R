@@ -13,6 +13,7 @@ mat <- matrix(0.0, nrow=3, ncol=2)
 mat
 colnames(mat) <- c('Var 1', 'Var 2')
 colnames(mat)
+mat
 
 # Subset data and declar new variables
 cars.rsub <- cars[1:50,]
@@ -25,13 +26,19 @@ carst <- as_tibble(cars)
 
 slice(carst, 1:50)
 
-carst %>% select(c(1, 3))
+select(carst, c(1, 3))
+
+carst %>% 
+  select(c(1, 3))
 
 carst %>% 
   slice(c(1,3,5)) %>%
   select(c(2,4))
 
-carst %>% filter(mpg > 30)
+filter(carst, mpg > 30)
+
+carst %>% 
+  filter(mpg > 30)
 
 
 # Sample histogram
