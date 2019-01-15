@@ -44,6 +44,15 @@ for (row in 1:nrow(cars3)) {
   }
 }
 
+# Identifying misclassifications - Similar to Table 2.2
+unique(cars2$brand)
+cars2 %>% 
+  group_by(brand) %>% 
+  summarize(
+    count = n()
+  )
+
+
 # Identifying outliers -- graphical methods
 # histogram of vehicle weight
 ggplot(data = cars2) +
