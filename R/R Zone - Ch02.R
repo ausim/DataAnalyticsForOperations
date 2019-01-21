@@ -9,6 +9,11 @@ cars <-read_csv(file = "../data/cars.txt")
 cars2 <-read_csv(file = "../data/cars2.txt")
 cars3 <-read_csv(file = "../data/cars3.txt")
 
+# Missing Data
+# missing mpg
+cars3 %>% 
+  filter(is.na(mpg))
+
 # remove records with NaNs
 # mask of "complete" records
 complete.cases(cars3)
