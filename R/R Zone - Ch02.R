@@ -102,3 +102,9 @@ ggplot(data = cars) +
   geom_histogram(mapping = aes(x = dweight), fill="blue", color="orange")
 
 
+# skewness - 3*(mean - median)/stddev
+sk <- 3*(mean(cars$zweight) - median(cars$zweight))/sd(cars$zweight)
+
+ndata <- rnorm(5000)
+hist(ndata)
+3*(mean(ndata) - median(ndata))/sd(ndata)
