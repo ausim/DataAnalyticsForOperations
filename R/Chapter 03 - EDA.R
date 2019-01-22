@@ -182,3 +182,9 @@ fit <- lm(churn$DayCharge~churn$DayMins)
 summary(fit)
 
 pairs(~churn$NightMins+churn$NightCalls+churn$NightCharge)
+
+library(GGally)
+ggpairs(select(churn, c('NightMins', 'NightCalls', 'NightCharge')))
+
+ggpairs(select(churn, c('NightMins', 'EveMins', 'DayMins', 'IntlMins')))
+
