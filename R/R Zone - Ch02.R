@@ -7,6 +7,7 @@ library(tidyverse)
 # similar to the built-in mtcars dataset, but more records
 cars <-read_csv(file = "../data/cars.txt")
 cars2 <-read_csv(file = "../data/cars2.txt")
+# note that cars3.txt and cars3.csv have different NA values :-(
 cars3 <-read_csv(file = "../data/cars3.txt")
 
 # Missing Data
