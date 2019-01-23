@@ -183,8 +183,17 @@ summary(fit)
 
 pairs(~churn$NightMins+churn$NightCalls+churn$NightCharge)
 
+# an add-in library for ggplot2
 library(GGally)
-ggpairs(select(churn, c('NightMins', 'NightCalls', 'NightCharge')))
+ggpairs(select(churn, c('NightMins', 'NightCharge', 'DayMins', 'DayCharge')))
 
-ggpairs(select(churn, c('NightMins', 'EveMins', 'DayMins', 'IntlMins')))
+ggpairs(select(churn, c('Churn', 'NightMins', 'DayMins')))
+
+# Big plots -- look at Zoomed version
+ggpairs(data= select(churn, c('NightMins','NightCharge', 'DayMins','DayCharge', 'IntlMins', 'IntPlan', 'Churn')))
+
+# Add color based on Churn
+ggpairs(data= select(churn, c('NightMins','NightCharge', 'DayMins','DayCharge', 'IntlMins', 'IntPlan', 'Churn')),
+          mapping=ggplot2::aes(colour = Churn))
+
 
