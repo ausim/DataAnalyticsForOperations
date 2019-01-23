@@ -78,8 +78,14 @@ mi <- min(cars$weightlbs)
 ma <- max(cars$weightlbs)
 cars$mmweight<- (cars$weightlbs - mi)/(ma - mi)
 summary(cars$mmweight)
-ggplot(data = cars) +
+# Looka the two together
+require('gridExtra')
+plot1 <- ggplot(data = cars) +
   geom_histogram(mapping = aes(x = mmweight), fill="blue", color="orange")
+plot2 <- ggplot(data = cars) +
+  geom_histogram(mapping = aes(x = weightlbs), fill="blue", color="orange")
+grid.arrange(plot1,plot2,ncol=2)
+
 # Same thing for cubic inches
 summary(cars$cubicinches)
 mi <- min(cars$cubicinches)
@@ -92,15 +98,22 @@ summary(cars$mmcubicinches)
 m <- mean(cars$weightlbs)
 s <- sd(cars$weightlbs)
 cars$zweight <- (cars$weightlbs - m)/s
-ggplot(data = cars) +
+plot1 <- ggplot(data = cars) +
   geom_histogram(mapping = aes(x = zweight), fill="blue", color="orange")
+plot2 <- ggplot(data = cars) +
+  geom_histogram(mapping = aes(x = weightlbs), fill="blue", color="orange")
+grid.arrange(plot1,plot2,ncol=2)
+
 
 # Decimal scaling
 max(abs(cars$weightlbs))
 # --- 4 digits
 cars$dweight <- cars$weightlbs/(10^4)
-ggplot(data = cars) +
+plot1 <- ggplot(data = cars) +
   geom_histogram(mapping = aes(x = dweight), fill="blue", color="orange")
+plot2 <- ggplot(data = cars) +
+  geom_histogram(mapping = aes(x = weightlbs), fill="blue", color="orange")
+grid.arrange(plot1,plot2,ncol=2)
 
 
 # skewness - 3*(mean - median)/stddev
