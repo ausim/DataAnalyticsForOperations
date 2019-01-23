@@ -3,6 +3,7 @@
 # 12/10/2018 - Jeff Smith
 #
 library(tidyverse)
+library(gridExtra)
 
 # similar to the built-in mtcars dataset, but more records
 cars <-read_csv(file = "../data/cars.txt")
@@ -79,7 +80,6 @@ ma <- max(cars$weightlbs)
 cars$mmweight<- (cars$weightlbs - mi)/(ma - mi)
 summary(cars$mmweight)
 # Looka the two together
-require('gridExtra')
 plot1 <- ggplot(data = cars) +
   geom_histogram(mapping = aes(x = mmweight), fill="blue", color="orange")
 plot2 <- ggplot(data = cars) +
