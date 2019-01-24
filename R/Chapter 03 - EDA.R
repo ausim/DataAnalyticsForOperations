@@ -124,7 +124,7 @@ ggplot(data=churn) +
   geom_point(aes(x=EveMins, y=DayMins,color=Churn))
 
 # Guess a line:
-# y = 400 - .6x
+# y = 400 - .6x is the book value.
 ggplot(data=churn) +
   geom_point(aes(x=EveMins, y=DayMins,color=Churn)) +
   geom_abline(intercept=385, slope=-0.6)
