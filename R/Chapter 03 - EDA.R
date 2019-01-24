@@ -103,6 +103,12 @@ ggplot(data = churn) +
   geom_bar(mapping = aes(x=CustServCalls, fill=Churn))
 ggplot(data = churn) +
   geom_bar(mapping = aes(x=CustServCalls, fill=Churn), position='fill')
+# numbers
+churn %>%
+  group_by(CustServCalls) %>%
+  summarize(n = n())
+
+filter(churn, CustServCalls == 9)[,c('AccountLength', 'DayMins', 'Churn')]
 
 # Day Minutes
 ggplot(data = churn) +
