@@ -115,6 +115,18 @@ plot2 <- ggplot(data = cars) +
   geom_histogram(mapping = aes(x = weightlbs), fill="blue", color="orange")
 grid.arrange(plot1,plot2,ncol=2)
 
+# create some negative values (since our current weightlbs valus
+# are all positive)
+mask <- runif(nrow(cars))
+cars$nweight <- cars$weightlbs
+cars$nweight[mask < 0.5] = -cars$nweight
+cars$ndweight <- cars$nweight/(10^4)
+plot1 <- ggplot(data = cars) +
+  geom_histogram(mapping = aes(x = ndweight), fill="blue", color="orange")
+plot2 <- ggplot(data = cars) +
+  geom_histogram(mapping = aes(x = nweight), fill="blue", color="orange")
+grid.arrange(plot1,plot2,ncol=2)
+
 
 # skewness - 3*(mean - median)/stddev
 sk <- 3*(mean(cars$zweight) - median(cars$zweight))/sd(cars$zweight)
