@@ -21,6 +21,10 @@ pairs(USArrests)
 scaled_df <- apply(USArrests, 2, scale)
 head(scaled_df)
 
+# check the variances of the normalized data.
+apply(scaled_df, 2, var)
+
+
 # The manual way ...
 arrests.cov <- cov(scaled_df)
 arrests.eigen <- eigen(arrests.cov)
