@@ -27,6 +27,9 @@ dfCentered <- as_tibble(cbind(x=(x-mean(df$x)), y=(df$y-mean(df$y))))
 ggplot(data=dfCentered) +
   geom_point(aes(x=x, y=y))
 
+# check the variances of the centered data.
+apply(dfCentered, 2, var)
+
 # Covariance matrix
 covdf = cov(dfCentered)
 covdf
@@ -34,6 +37,7 @@ covdf
 # Get the eigenvalues and eigenvectors
 eigenValues <- eigen(covdf)$values
 eigenVectors <- eigen(covdf)$vectors
+eigenValues
 eigenVectors
 # the first eigenvector is negative of what is shown in the Smith tutorial.  This shouldn't matter.
 # See https://stats.stackexchange.com/questions/154716/pca-eigenvectors-of-opposite-sign-and-not-being-able-to-compute-eigenvectors-wi
@@ -49,7 +53,7 @@ ggplot(data=dfCentered) +
   geom_abline(intercept=0, slope=eigenVectors[2,1]/eigenVectors[1,1], color="red") +
   geom_abline(intercept=0, slope=eigenVectors[2,2]/eigenVectors[1,2], color="blue")
 
-test <- as_tibble(data.matrix(dfCentered) %*% eigenVectors)
+
 # Transfomed data
 dfTransformed <- as_tibble(t(t(eigenVectors) %*% t(data.matrix(dfCentered))))
 # plot the transformed data
@@ -59,6 +63,12 @@ ggplot(data=dfTransformed) +
   geom_point(aes(x=V1, y=V2))
 # can also use Z*e to get the transfomed data
 test <- as_tibble(data.matrix(dfCentered) %*% eigenVectors)
+# plot the transformed data
+ggplot(data=test) +
+  xlim(-2, 2) +
+  ylim(-2, 2) +
+  geom_point(aes(x=V1, y=V2))
+
 
 # Using the built-in PCA tools
 df.pca <- prcomp(df, center = TRUE, scale. = FALSE)
@@ -70,6 +80,3 @@ ggplot(data=as_tibble(df.pca$x)) +
   xlim(-2, 2) +
   ylim(-2, 2) +
   geom_point(aes(x=PC1, y=PC2))
-
-# Still getting negatives that are different between the manually computed version, 
-# the version with built-in pca, and the version in the Smith tutorial.

@@ -16,8 +16,9 @@ cov(vals)
 # grab the numeric columns and use the PCA function prcomp()
 mtcars.pca <- prcomp(vals, center = TRUE,scale. = TRUE)
 summary(mtcars.pca)
+# the eigenvalues are the square sof the std. dev's. 
 
-# the eginvectors
+# the eigenvectors
 mtcars.pca$rotation
 
 # instructions for installing the library at the web site above.

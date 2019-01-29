@@ -11,7 +11,8 @@ library(gridExtra)
 data("USArrests")
 head(USArrests, 10)
 
-# check the variance of each column (variable)
+# check the mean and variance of each column (variable)
+apply(USArrests, 2, mean)
 apply(USArrests, 2, var)
 
 # Let's check the pairs
@@ -21,9 +22,10 @@ pairs(USArrests)
 scaled_df <- apply(USArrests, 2, scale)
 head(scaled_df)
 
-# check the variances of the normalized data.
+# check the means and variances of the normalized data.
+# should be 0, 1 (if scale() works as expected)
+apply(scaled_df, 2, mean)
 apply(scaled_df, 2, var)
-
 
 # The manual way ...
 arrests.cov <- cov(scaled_df)
@@ -41,7 +43,7 @@ row.names(phi) <- c("Murder", "Assult", "UrbanPop", "Rape")
 colnames(phi) <- c("PC1", "PC2")
 phi
 
-# Calculate Principal Components scores
+# Calculate Principal Component scores (Transformed data)
 PC1 <- as.matrix(scaled_df) %*% phi[,1]
 PC2 <- as.matrix(scaled_df) %*% phi[,2]
 
