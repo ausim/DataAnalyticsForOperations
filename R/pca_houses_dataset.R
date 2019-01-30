@@ -25,11 +25,16 @@ pairs(df)
 prcomp.df <- prcomp(df, center = TRUE, scale = TRUE)
 summary(prcomp.df)
 # % of variance values match Table 4.3
+prcomp.df$sdev^2
+# Eigenvalues match the "Total" column in Table 4.3
 
 # the rotations (the eignvectors)
 prcomp.df$rotation
 screeplot(prcomp.df, type="lines",col=3)
 # matches the scree plot in Figure 4.4
+
+# takes a while and doesn't seem particularlyl useful.
+biplot(prcomp.df, scale = 0,xlabs=rep("·", nrow(prcomp.df$x)))
 
 # The manual way
 # scale the dataset
@@ -40,14 +45,13 @@ colMeans(sdf)  # faster version of apply(scaled.dat, 2, mean)
 apply(sdf, 2, sd)
 
 # covariance
-cov_sdf <- cov(sdf)
+(cov_sdf <- cov(sdf))
+# similar to Table 4.1, but uses full dataset rather than the training set only.
 
 # eigenvalues and eigenvectors 
-eigenValues <- eigen(cov_sdf)$values
-eigenVectors <- eigen(cov_sdf)$vectors
-eigenVectors
+(eigenValues <- eigen(cov_sdf)$values)
+(eigenVectors <- eigen(cov_sdf)$vectors)
 # will be negatives of the vectors from the prcomp function (but that doesn't matter)
-eigenValues
 
 # the principal components are different from the values that the book gets (Table 4.2).  
 # The book used 'components' (loadings). # loading = Eigenvector * sqrt(Eigenvalue)

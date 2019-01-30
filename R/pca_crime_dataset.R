@@ -6,6 +6,7 @@
 #
 library(tidyverse)
 library(gridExtra)
+library(GGally)
 
 # the dataset that we want to use is built-in to R
 data("USArrests")
@@ -14,9 +15,10 @@ head(USArrests, 10)
 # check the mean and variance of each column (variable)
 apply(USArrests, 2, mean)
 apply(USArrests, 2, var)
+# looks like we'll want to center and scale.
 
 # Let's check the pairs
-pairs(USArrests)
+ggpairs(USArrests)
 
 # Normalize the variables
 scaled_df <- apply(USArrests, 2, scale)
@@ -31,14 +33,18 @@ apply(scaled_df, 2, var)
 arrests.cov <- cov(scaled_df)
 arrests.eigen <- eigen(arrests.cov)
 str(arrests.eigen)
+# Eigenvalues
 arrests.eigen$values
+# EigenVectors
 arrests.eigen$vectors
-# By default, eigenvectors in R point in the negative direction
+# By default, eigenvectors in R point in the negative direction (not sure exactly what this 
+# means when you have orthogonal vectors ...)
 
-# grab the first two sets of loadings
+# grab the first two sets of loadings (the parens cause the result to print)
 (phi <- arrests.eigen$vectors[,1:2])
 # Flip the negatives on the PCs to make them more intuitive
 phi <- -phi
+# Pretty-up the data frame
 row.names(phi) <- c("Murder", "Assult", "UrbanPop", "Rape")
 colnames(phi) <- c("PC1", "PC2")
 phi
@@ -94,13 +100,14 @@ pca_result$scale
 
 # component loadings
 pca_result$rotation
-# switch the negatives
-pca_result$rotation <- -pca_result$rotation
-pca_result$rotation
+# switch the negatives (as we did above)
+(pca_result$rotation <- -pca_result$rotation)
 # switch the component values also
 pca_result$x <- - pca_result$x
 head(pca_result$x)
 
+# scale = 0 ensures that the vectors are scaled to
+# represent the loadings
 biplot(pca_result, scale = 0)
 # Use choices=3:4 if you want to see the other components)
 biplot(pca_result, choices=3:4, scale = 0)

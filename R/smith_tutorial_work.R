@@ -53,6 +53,11 @@ ggplot(data=dfCentered) +
   geom_abline(intercept=0, slope=eigenVectors[2,1]/eigenVectors[1,1], color="red") +
   geom_abline(intercept=0, slope=eigenVectors[2,2]/eigenVectors[1,2], color="blue")
 
+# proportion of variance explained
+# Note that we would divide by the number of variables (2, in this case)
+#   if we had scaled to variance to 1.
+eigenValues / (covdf[1,1] + covdf[2,2])
+
 
 # Transfomed data
 dfTransformed <- as_tibble(t(t(eigenVectors) %*% t(data.matrix(dfCentered))))
@@ -69,14 +74,21 @@ ggplot(data=test) +
   ylim(-2, 2) +
   geom_point(aes(x=V1, y=V2))
 
+# To get the centered data back:
+test <- t(eigenVectors %*% t(dfTransformed))
+# original values - uncenter
+orig <- as_tibble(test + c(mean(df$x), mean(df$y)))
 
 # Using the built-in PCA tools
 df.pca <- prcomp(df, center = TRUE, scale. = FALSE)
 summary(df.pca)
 df.pca$rotation
+# Back to the eigenValues
+df.pca$sdev^2
 # Transfomed data
 df.pca$x
 ggplot(data=as_tibble(df.pca$x)) +
   xlim(-2, 2) +
   ylim(-2, 2) +
   geom_point(aes(x=PC1, y=PC2))
+

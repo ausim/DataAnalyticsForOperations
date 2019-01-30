@@ -3,12 +3,13 @@
 #
 # 1/3/2019 - Jeff Smith
 #
+library(GGally)
 
 # the dataset we'll use
 vals <- mtcars[,c(1:7,10,11)]
 
 # quick visual check of the correlations
-pairs(vals)
+ggpairs(vals)
 
 # Have a look at the covarance matrix
 cov(vals)
@@ -16,7 +17,8 @@ cov(vals)
 # grab the numeric columns and use the PCA function prcomp()
 mtcars.pca <- prcomp(vals, center = TRUE,scale. = TRUE)
 summary(mtcars.pca)
-# the eigenvalues are the square sof the std. dev's. 
+# the eigenvalues are the square sof the std. dev's.
+mtcars.pca$sdev^2
 
 # the eigenvectors
 mtcars.pca$rotation
