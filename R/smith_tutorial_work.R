@@ -35,10 +35,8 @@ covdf = cov(dfCentered)
 covdf
 
 # Get the eigenvalues and eigenvectors
-eigenValues <- eigen(covdf)$values
-eigenVectors <- eigen(covdf)$vectors
-eigenValues
-eigenVectors
+(eigenValues <- eigen(covdf)$values)
+(eigenVectors <- eigen(covdf)$vectors)
 # the first eigenvector is negative of what is shown in the Smith tutorial.  This shouldn't matter.
 # See https://stats.stackexchange.com/questions/154716/pca-eigenvectors-of-opposite-sign-and-not-being-able-to-compute-eigenvectors-wi
 # Per, https://uc-r.github.io/pca, by default, eigenvectors in R point in the negative direction
@@ -58,15 +56,18 @@ ggplot(data=dfCentered) +
 #   if we had scaled to variance to 1.
 eigenValues / (covdf[1,1] + covdf[2,2])
 
-
 # Transfomed data
+# For some reason, he wants rows ...
+FinalData <- as_tibble(t(eigenVectors) %*% t(data.matrix(dfCentered)))
+# I'm going to do the tranaspose here
 dfTransformed <- as_tibble(t(t(eigenVectors) %*% t(data.matrix(dfCentered))))
 # plot the transformed data
 ggplot(data=dfTransformed) +
   xlim(-2, 2) +
   ylim(-2, 2) +
   geom_point(aes(x=V1, y=V2))
-# can also use Z*e to get the transfomed data
+# Can also use Z*e to get the transfomed data - not sure when he doesn't
+# do this -- seems easier to me ...
 test <- as_tibble(data.matrix(dfCentered) %*% eigenVectors)
 # plot the transformed data
 ggplot(data=test) +
