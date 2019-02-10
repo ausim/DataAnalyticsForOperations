@@ -82,3 +82,52 @@ t.test(churn$DayMins, mu = 180, alternative = "two.sided")
 
 # mean number of day minutes > 180
 t.test(churn$DayMins, mu = 180, alternative = "less")
+
+#
+# H0: proportion of churners == .15
+zdata <- (.1449-.15)/sqrt(.15*.85/3333)
+(pval <- 2*pnorm(zdata))
+
+
+#
+# Equality of means
+#
+# Split the churn dataset into a "training" set and a "test" set.
+# From https://stackoverflow.com/questions/17200114/how-to-split-data-into-training-testing-sets-using-sample-function
+## set the seed to make your partition reproducible
+set.seed(123)
+train_ind <- sample(seq_len(nrow(churn)), size = 2529)
+churn.train <- churn[train_ind, ]
+churn.test  <- churn[-train_ind, ]
+
+ma <- mean(churn.train$CustServCalls); mb <- mean(churn.test$CustServCalls)
+sd(churn.train$CustServCalls); sd(churn.test$CustServCalls)
+
+t.test(churn.train$CustServCalls,churn.test$CustServCalls , alternative = "two.sided", var.equal = FALSE)
+
+# Example from Section 6.3
+pchisq(1.15, 2,lower.tail=FALSE)
+
+# Example from Section 6.4
+pchisq(1.04, 2,lower.tail=FALSE)
+
+
+# ANOVA
+a <- c(30, 40, 50, 60)
+b <- c(25, 30, 50, 55)
+c <- c(25, 30, 40, 45)
+ab <- append(a, b)
+datavalues <- append(ab, c)
+datalabels <- factor(c(rep("a",length(a)),rep("b",length(b)),rep("c",length(c))))
+anova.results <- aov(datavalues ~ datalabels)
+summary(anova.results)
+
+d <- c(43, 45, 45, 47)
+e <- c(37, 40, 40, 43)
+f <- c(34, 35, 35, 36)
+de <- append(d, e)
+datavalues <- append(de, f)
+datalabels <- factor(c(rep("d",length(d)),rep("e",length(e)),rep("f",length(f))))
+anova.results <- aov(datavalues ~ datalabels)
+summary(anova.results)
+
