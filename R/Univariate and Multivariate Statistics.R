@@ -83,9 +83,11 @@ t.test(churn$DayMins, mu = 180, alternative = "two.sided")
 # mean number of day minutes > 180
 t.test(churn$DayMins, mu = 180, alternative = "less")
 
+
 #
 # H0: proportion of churners == .15
-zdata <- (.1449-.15)/sqrt(.15*.85/3333)
+p <- sum(churn$Churn == 'True.')/nrow(churn)
+zdata <- (p-.15)/sqrt(.15*.85/nrow(churn))
 (pval <- 2*pnorm(zdata))
 
 
@@ -104,6 +106,7 @@ ma <- mean(churn.train$CustServCalls); mb <- mean(churn.test$CustServCalls)
 sd(churn.train$CustServCalls); sd(churn.test$CustServCalls)
 
 t.test(churn.train$CustServCalls,churn.test$CustServCalls , alternative = "two.sided", var.equal = FALSE)
+
 
 # Example from Section 6.3
 pchisq(1.15, 2,lower.tail=FALSE)
