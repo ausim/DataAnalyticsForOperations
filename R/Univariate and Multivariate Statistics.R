@@ -71,6 +71,7 @@ sd(test)
 47/sqrt(n)
 
 
+hist(baseball$hits)
 # mean number of hits == 65
 t.test(baseball$hits, mu = 65, alternative = "two.sided")
 
@@ -101,11 +102,19 @@ set.seed(123)
 train_ind <- sample(seq_len(nrow(churn)), size = 2529)
 churn.train <- churn[train_ind, ]
 churn.test  <- churn[-train_ind, ]
-
-ma <- mean(churn.train$CustServCalls); mb <- mean(churn.test$CustServCalls)
+# Check the means and std. dev. of the split datasets
+mean(churn.train$CustServCalls);mean(churn.test$CustServCalls)
 sd(churn.train$CustServCalls); sd(churn.test$CustServCalls)
-
+# Run the t-test
 t.test(churn.train$CustServCalls,churn.test$CustServCalls , alternative = "two.sided", var.equal = FALSE)
+
+# See how this works
+# This gives us the right of t_data
+# Note that we're using min(n1-1, n2-1) for DOF while the t.test uses the
+# more complicated expression.
+pt(.7134, 804, lower.tail=FALSE)
+# since it's a 2-tail test, the p-value is:
+2*pt(.7134, 804, lower.tail=FALSE)
 
 
 # Example from Section 6.3
