@@ -115,7 +115,7 @@ t.test(churn.train$CustServCalls,churn.test$CustServCalls , alternative = "two.s
 pt(.7134, 804, lower.tail=FALSE)
 # since it's a 2-tail test, the p-value is:
 2*pt(.7134, 804, lower.tail=FALSE)
-
+# Go back and change the random number seed -- different sample
 
 # Example from Section 6.3
 pchisq(1.15, 2,lower.tail=FALSE)
