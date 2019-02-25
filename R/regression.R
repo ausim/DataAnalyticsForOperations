@@ -47,5 +47,11 @@ print(summary(r))
 
 
 # Multiple regression
+(r <- lm(Rating~Sugars, cereals))
+print(summary(r))
+
+(r <- lm(Rating~Fiber, cereals))
+print(summary(r))
+
 (r <- lm(Rating~Sugars+Fiber, cereals))
 print(summary(r))
