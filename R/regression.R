@@ -55,3 +55,12 @@ print(summary(r))
 
 (r <- lm(Rating~Sugars+Fiber, cereals))
 print(summary(r))
+
+
+
+(r <- lm(Rating~Sugars+Fiber+Potass, cereals))
+print(summary(r))
+# Note that the vif function is in the car library
+require(car)
+vif(r)
+
