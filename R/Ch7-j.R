@@ -22,7 +22,9 @@ valid.df <- mower.df[valid.index, ]
 ## new household
 new.df <- data.frame(Income = 60, Lot_Size = 20)
 
-## scatter plot
+#
+## scatter plot of the training data
+#
 plot(Lot_Size ~ Income, data=train.df, pch=ifelse(train.df$Ownership=="Owner", 1, 3))
 text(train.df$Income, train.df$Lot_Size, rownames(train.df), pos=4)
 text(60, 20, "X")
@@ -51,6 +53,7 @@ valid.norm.df[, 1:2] <- predict(norm.values, valid.df[, 1:2])
 mower.norm.df[, 1:2] <- predict(norm.values, mower.df[, 1:2])
 new.norm.df <- predict(norm.values, new.df)
 
+
 #
 # Compute KNN
 #
@@ -68,11 +71,12 @@ train.df[row.names(train.df)[attr(nn, "nn.index")],]
 # Majority voting would yield "owner" for the test (as shown in the nn object)
 
 
+
 #
-# Choosing k - Use the Holdout Method and evaluate the accuracy of the classifier
+# Choosing k - Use the Hold-out Method and evaluate the accuracy of the classifier
 # with different values of k
 #
-# First show how the knn() function will take predict for multiple values
+# First show how the knn() function will predict for multiple test values
 knn.pred <- knn(train.norm.df[, 1:2], valid.norm.df[, 1:2], 
                 cl = train.norm.df[, 3], k = 2)
 # show the results
@@ -98,9 +102,11 @@ for(i in 1:14) {
   accuracy.df[i, 2] <- confusionMatrix(knn.pred, valid.norm.df[, 3])$overall[1] 
 }
 accuracy.df
-# 8 appears to be the best value.  
+# 8 appears to be the best value for k  
 
-# Now that we have the "best" k, use the full dataset as training
+
+#
+## Now that we have the "best" k, use the full dataset as training
 # to make our prediction
 # Table 7.4
 knn.pred.new <- knn(mower.norm.df[, 1:2], new.norm.df, 
@@ -108,3 +114,25 @@ knn.pred.new <- knn(mower.norm.df[, 1:2], new.norm.df,
 knn.pred.new
 mower.df[row.names(mower.df)[attr(knn.pred.new, "nn.index")],]
 # Note that the vote is 4-4 -- the winner was chosen randomly.
+
+#
+# Should we re-normalize the full data set?  The current version
+# was normalized using the x-bar and s value only from the training
+# dataset, but here we're combining the training and validation
+# datasets for the prediction.
+# Try it ...
+norm.values <- preProcess(mower.df[, 1:2], method=c("center", "scale"))
+# to see the computed means
+norm.values$mean
+# to see the computed std deviations
+norm.values$std
+# use the prdict function to apply the centering/scaling to the training, validation, 
+# and full datasets along with the new observation
+mower.norm.df[, 1:2] <- predict(norm.values, mower.df[, 1:2])
+new.norm.df <- predict(norm.values, new.df)
+knn.pred.new <- knn(mower.norm.df[, 1:2], new.norm.df, 
+                    cl = mower.norm.df[, 3], k = 8)
+knn.pred.new
+mower.df[row.names(mower.df)[attr(knn.pred.new, "nn.index")],]
+
+
