@@ -1,5 +1,6 @@
 #
-# Ch7-j.R - Modified version of Ch7.R from the DMBA book (https://www.dataminingbook.com/book/r-edition)
+# Ch7-j.R - Modified version of Ch7.R from the DMBA book 
+# (https://www.dataminingbook.com/book/r-edition)
 #
 # 2019-03-18 - Jeff Smith
 #
@@ -116,7 +117,7 @@ mower.df[row.names(mower.df)[attr(knn.pred.new, "nn.index")],]
 # Note that the vote is 4-4 -- the winner was chosen randomly.
 
 #
-# Should we re-normalize the full data set?  The current version
+# Should we re-normalize the full data set???  The current version
 # was normalized using the x-bar and s value only from the training
 # dataset, but here we're combining the training and validation
 # datasets for the prediction.
