@@ -91,6 +91,7 @@ confusionMatrix(deeper.ct.point.pred.valid, as.factor(valid.df$Personal.Loan))
 # argument xval refers to the number of folds to use in rpart's built-in
 # cross-validation procedure
 # argument cp sets the smallest value for the complexity parameter.
+set.seed(1)
 cv.ct <- rpart(Personal.Loan ~ ., data = train.df, method = "class", 
                cp = 0.00001, minsplit = 5, xval = 5)
 # use printcp() to print the table. 

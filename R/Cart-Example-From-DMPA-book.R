@@ -37,7 +37,7 @@ text(fit, use.n=TRUE, all=TRUE, cex=.8)
 fit <- rpart(crisk ~ assets+savings+income,
              method="class", data=df)
 prp(fit, type = 1, extra = 1, under = TRUE, split.font = 1, varlen = -10)
-
+summary(fit)
 
 
 
