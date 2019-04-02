@@ -49,6 +49,9 @@ with(lrl, pchisq(null.deviance-deviance,
 
 # Odds Ratios
 round(exp(coef(lrl)),3)
+# Predict with x' = x + 1
+newd <- with(patients, data.frame(age=c(50, 51)))
+predict.glm(lrl, newdata=newd, type="resp")
 
 
 #
