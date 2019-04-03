@@ -48,7 +48,7 @@ with(lrl, pchisq(null.deviance-deviance,
                  lower.tail=FALSE))
 
 # Odds Ratios
-round(exp(coef(lrl)),3)
+round(exp(coef(lrl)[2]),3)
 # Predict with x' = x + 1
 newd <- with(patients, data.frame(age=c(50, 51)))
 predict.glm(lrl, newdata=newd, type="resp")
@@ -66,19 +66,15 @@ churn$VMP.ind <- ifelse(churn$VMailPlan=='yes', 1, 0)
 lr2 <- glm(Churn~VMP.ind,data=churn,family=binomial)
 summary(lr2)
 
-
 # Inference on parameters
 # G
 with(lr2, null.deviance - deviance)
-# dof
-with(lr2, df.null - df.residual)
 # p-value
 with(lr2, pchisq(null.deviance-deviance, 
                  df.null-df.residual,
                  lower.tail=FALSE))
-
 # odds ratio
-round(exp(coef(lr2)),3)
+round(exp(coef(lr2)[2]),3)
 # Make predictions
 newd <- with(churn, data.frame(VMP.ind=c(0,1)))
 predict.glm(lr2,newdata=newd)
@@ -107,17 +103,23 @@ lr3 <- glm(Churn ~ CSC_Med + CSC_Hi, data = churn, family=binomial)
 summary(lr3)
 
 # odds ratio
-round(exp(coef(lr3)),3)
+round(exp(coef(lr3)[2:3]),3)
 
 # G
 with(lr3, null.deviance - deviance)
-# dof
-with(lr3, df.null - df.residual)
 # p-value
 with(lr3, pchisq(null.deviance-deviance, 
                  df.null-df.residual,
                  lower.tail=FALSE))
 # CSC_Med does not appear to be significant (p-value = .75)
+
+# Make predictions anyway
+newd <- with(churn, data.frame(CSC_Med=c(0,1,0), CSC_Hi=c(0,0,1)))
+predict.glm(lr3,newdata=newd)
+predict.glm(lr3,newdata=newd, type="resp")
+
+
+
 
 #
 # Combine low and medium to use 2 levels 
@@ -138,7 +140,7 @@ lr4 <- glm(Churn ~ CSC_Hi, data = churn, family=binomial)
 summary(lr4)
 
 # odds ratio
-round(exp(coef(lr4)),3)
+round(exp(coef(lr4)[2]),3)
 
 # G
 with(lr4, null.deviance - deviance)
@@ -157,7 +159,7 @@ lr5 <- glm(Churn ~ DayMins, data = churn, family=binomial)
 summary(lr5)
 
 # odds ratio
-round(exp(coef(lr5)),3)
+round(exp(coef(lr5)[2]),3)
 
 # G
 with(lr5, null.deviance - deviance)
@@ -165,8 +167,16 @@ with(lr5, null.deviance - deviance)
 with(lr5, df.null - df.residual)
 # p-value
 with(lr5, pchisq(null.deviance-deviance, 
-                 df.null-df.residual,
-                 lower.tail=FALSE))
+    df.null-df.residual, lower.tail=FALSE))
+
+# Make predictions
+newd <- with(churn, 
+  data.frame(DayMins = c(100, 200, 300, 400, 500, 1000)))
+predict.glm(lr5,newdata=newd)
+predict.glm(lr5,newdata=newd, type="resp")
+
+
+
 
 # 
 # Multiple Logistic Regression
@@ -179,12 +189,14 @@ lr6 <- glm(Churn ~
              DayMins +
              EveMins +
              NightMins +
-             IntlMins,
+             IntlMins +
+             CustServCalls,
            data=churn, family=binomial)
 summary(lr6)
 
 # odds ratio
-round(exp(coef(lr6)),3)
+round(exp(coef(lr6)[1:4]),3)
+round(exp(coef(lr6)[5:8]),3)
 
 # G
 with(lr6, null.deviance - deviance)
@@ -192,17 +204,16 @@ with(lr6, null.deviance - deviance)
 with(lr6, df.null - df.residual)
 # p-value
 with(lr6, pchisq(null.deviance-deviance, 
-                 df.null-df.residual,
-                 lower.tail=FALSE))
+  df.null-df.residual,lower.tail=FALSE))
 
 # Make predictions
 newd <- with(churn, data.frame(
-  IntlPind = c(0), 
-  VMPind=c(0),
-  DayMins=c(225),
-  EveMins=c(100),
-  NightMins=c(55),
-  IntlMins=c(27)))
-predict.glm(lr6,newdata=newd)
+       IntlPind = c(  0,   0,   0,   1), 
+         VMPind = c(  0,   1,   1,   1),
+        DayMins = c(225, 400, 100, 225),
+        EveMins = c(100, 223,  50, 102),
+      NightMins = c( 55, 128,  75, 225),
+       IntlMins = c( 27,  10,   0,  10),
+  CustServCalls = c(  1,   2,   1,   5)))
 predict.glm(lr6,newdata=newd, type="resp")
 

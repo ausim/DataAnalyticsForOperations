@@ -36,3 +36,6 @@ predict.glm(lrl, newdata=newd)
 # probabilities
 predict.glm(lrl, newdata=newd, type="resp")
 
+
+# Odds Ratios
+round(exp(coef(lrl)[2]),3)
